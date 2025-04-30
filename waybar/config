@@ -1,11 +1,10 @@
-
 {
   "layer": "top",
   "position": "top",
   "height": 30,
-  "modules-left": ["sway/workspaces", "sway/mode"],
+  "modules-left": ["sway/workspaces","sway/window"],
   "modules-center": ["clock"],
-  "modules-right": ["custom/filemanager","custom/bluetooth","cpu", "memory", "pulseaudio", "network", "battery"],
+  "modules-right": ["custom/filemanager", "custom/bluetooth","custom/net_speed", "cpu", "memory", "pulseaudio", "network", "battery"],
 
   "sway/workspaces": {
     "disable-scroll": false,
@@ -16,10 +15,6 @@
     "on-click": "swaymsg workspace {name}"
   },
 
-  "sway/mode": {
-    "format": " {mode}"
-  },
-
   "clock": {
     "interval": 60,
     "format": "  {:%a %d %b | %H:%M}"
@@ -27,50 +22,63 @@
 
   "cpu": {
     "format": " {usage}%",
-    "tooltip": false
+    "tooltip": false,
+    "on-click": "alacritty -e btop"
   },
 
   "memory": {
-    "format": " {used:0.1f}G",
-    "tooltip": false
+    "format": " {used:0.1f}G",
+    "tooltip": false,
+    "on-click": "gnome-system-monitor"
   },
 
   "pulseaudio": {
     "format": " {volume}%",
     "format-muted": " muted",
+    "on-click": "pavucontrol",
     "scroll-step": 5
   },
-"custom/filemanager": {
-  "format": " files", // this is a folder icon
-  "tooltip": "Open File Manager",
-  "on-click": "thunar",
-  "interval": 3600
-},
+
+  "custom/filemanager": {
+    "format": " files",
+    "tooltip": "Open File Manager",
+    "on-click": "thunar",
+    "interval": 3600
+  },
 
   "custom/bluetooth": {
-  "format": " Bluetooth",  // You can use an icon here (I've used a Bluetooth icon, but feel free to customize it)
-  "tooltip": "Open Bluetooth Manager", // This is the tooltip that appears when you hover over the icon
-  "on-click": "blueman-manager", // This will open the Bluetooth manager when clicked
-  "interval": 3600 // This controls how often it updates (in seconds)
-}
+    "format": "󰂯 Bluetooth",
+    "tooltip": "Open Bluetooth Manager",
+    "on-click": "blueman-manager",
+    "interval": 3600
+  },
 
-
-
-
-
-,
- 
-"network": {
-  "interface": "wlp2s0",
-  "format-wifi": " {essid}",
-  "format-disconnected": "⚠ No Network",
-  "tooltip": true
-}
-,
+  "network": {
+    "interface": "wlp2s0",
+    "format-wifi": " {essid}",
+    "format-disconnected": "⚠ No Network",
+    "tooltip": true,
+    "on-click": "nm-connection-editor"
+  },
 
   "battery": {
     "format": "  {capacity}%",
     "format-charging": " {capacity}%"
-  }
+  },
+
+   "sway/window": {
+    "format": "{title}",
+    "max-length": 50,
+    "tooltip": true
+  },
+  "custom/net_speed": {
+  "format": "{}",
+  "exec": "~/.config/waybar/net_speed.sh",
+  "interval": 1,
+  "return-type": "text",
+  "tooltip": "true"
+}
+
+
 }
 

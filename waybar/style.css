@@ -14,6 +14,12 @@ window#waybar {
 }
 
 
+#custom-net_speed {
+  padding: 0 10px;
+  margin: 0 5px;
+  background-color: #45475a;
+  border-radius: 4px;
+}
 
 
 #workspaces button {
@@ -37,7 +43,8 @@ window#waybar {
 #network,
 #battery,
 #custom-filemanager,
-#custom-bluetooth
+#custom-bluetooth,
+#sway-window
 {
   padding: 0 10px;
   margin: 0 5px;
