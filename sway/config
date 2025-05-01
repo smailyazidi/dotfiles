@@ -18,8 +18,8 @@ set $term kitty
 # Your preferred application launcher
 set $menu rofi -show drun
 
-exec waybar
 
+exec waybar -c ~/.config/waybar/config-sway -s ~/.config/waybar/style-sway.css
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
@@ -57,13 +57,12 @@ input "1102:4639:DELL081C:00_044E:121F_Touchpad" {
 }
 # Toggle microphone mute with F4
 
-# default_border pixel 2
+ default_border pixel 2
 #
  client.focused          #0CAFFF #0CAFFF #ffffff #0CAFFF #0CAFFF
-# client.unfocused        #3a3a3a #1f1f1f #888888 #3a3a3a #1f1f1f
-# client.focused_inactive #bbbbbb #bbbbbb #444444 #bbbbbb #bbbbbb
-# client.urgent           #E53935 #E53935 #ffffff #E53935 #E53935
-
+ client.unfocused         #008B8B #008B8B  #ffffff  #008B8B #008B8B
+ client.focused_inactive #008B8B #008B8B  #ffffff  #008B8B #008B8B
+ client.urgent         #bbbbbb #bbbbbb #444444 #bbbbbb #bbbbbb
 
 
 # You can get the names of your inputs by running: swaymsg -t get_inputs

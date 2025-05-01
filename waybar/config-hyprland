@@ -1,23 +1,26 @@
+
 {
   "layer": "top",
   "position": "top",
   "height": 30,
-  "modules-left": ["sway/workspaces","sway/window"],
-  "modules-center": ["clock"],
-  "modules-right": ["custom/filemanager", "custom/bluetooth","custom/net_speed", "cpu", "memory", "pulseaudio", "network", "battery"],
 
-  "sway/workspaces": {
+  "modules-left": ["hyprland/workspaces", "custom/app_firefox", "custom/app_discord", "custom/app_whatsapp", "custom/app_terminal", "hyprland/window"],
+
+  "modules-center": ["clock"],
+  "modules-right": ["custom/filemanager", "custom/bluetooth", "custom/net_speed", "cpu", "memory", "pulseaudio", "network", "battery"],
+
+  "hyprland/workspaces": {
     "disable-scroll": false,
     "format": "{name}",
     "format-focused": "[{name}]",
     "format-visible": "{name}",
     "format-urgent": " {name}",
-    "on-click": "swaymsg workspace {name}"
+    "on-click": "hyprctl dispatch workspace {name}"
   },
 
   "clock": {
     "interval": 60,
-    "format": "  {:%a %d %b | %H:%M}"
+    "format": " {:%a %d %b | %I:%M %p}"
   },
 
   "cpu": {
@@ -66,19 +69,39 @@
     "format-charging": " {capacity}%"
   },
 
-   "sway/window": {
-    "format": "{title}",
+  "hyprland/window": {
+    "format": "   {title}",
     "max-length": 50,
     "tooltip": true
   },
+
   "custom/net_speed": {
-  "format": "{}",
-  "exec": "~/.config/waybar/net_speed.sh",
-  "interval": 1,
-  "return-type": "text",
-  "tooltip": "true"
-}
+    "format": "{}",
+    "exec": "~/.config/waybar/net_speed.sh",
+    "interval": 1,
+    "return-type": "text",
+    "tooltip": true
+  },
 
-
+  "custom/app_firefox": {
+    "format": "",
+    "tooltip": "Firefox",
+    "on-click": "firefox"
+  },
+  "custom/app_discord": {
+    "format": "",
+    "tooltip": "Discord",
+    "on-click": "discord"
+  },
+  "custom/app_whatsapp": {
+    "format": "",
+    "tooltip": "WhatsApp",
+    "on-click": "wasistlos"
+  },
+  "custom/app_terminal": {
+    "format": "",
+    "tooltip": "Terminal",
+    "on-click": "kitty"
+  }
 }
 
