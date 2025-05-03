@@ -4,8 +4,17 @@
   "position": "top",
   "height": 30,
 
-  "modules-left": ["hyprland/workspaces", "custom/app_firefox", "custom/app_discord", "custom/app_whatsapp", "custom/app_terminal", "hyprland/window"],
-
+"modules-left": [
+  "hyprland/workspaces",
+  "custom/app_firefox",
+  "custom/app_discord",
+  "custom/app_whatsapp",
+  "custom/app_spotify",
+  "custom/app_terminal",
+  "custom/app_nvim",
+  "custom/app_vscode",
+  "hyprland/window"
+],
   "modules-center": ["clock"],
   "modules-right": ["custom/filemanager", "custom/bluetooth", "custom/net_speed", "cpu", "memory", "pulseaudio", "network", "battery"],
 
@@ -102,6 +111,21 @@
     "format": "",
     "tooltip": "Terminal",
     "on-click": "kitty"
-  }
+  },
+  "custom/app_nvim": {
+  "format": "",
+  "tooltip": "Neovim",
+  "on-click": "kitty nvim"
+},
+"custom/app_spotify": {
+  "format": "",
+  "tooltip": "Spotify",
+  "on-click": "spotify"
+},
+"custom/app_vscode": {
+  "format": "",
+  "tooltip": "VSCode",
+  "on-click": "code"
+}
 }
 
