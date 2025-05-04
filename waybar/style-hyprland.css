@@ -88,7 +88,8 @@ window#waybar {
 #custom-app_nvim,
 #custom-app_spotify,
 #custom-app_vscode,
-#window {
+#window,
+#custom-keyboard-state{
   padding: 0 10px;
   margin: 0 5px;
   background-color: transparent;

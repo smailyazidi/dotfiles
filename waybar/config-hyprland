@@ -16,7 +16,7 @@
   "hyprland/window"
 ],
   "modules-center": ["clock"],
-  "modules-right": ["custom/filemanager", "custom/bluetooth", "custom/net_speed", "cpu", "memory", "pulseaudio", "network", "battery"],
+  "modules-right": ["custom/filemanager", "custom/bluetooth", "custom/net_speed", "cpu",  "custom/keyboard-state" , "memory", "pulseaudio", "network", "battery"],
 
   "hyprland/workspaces": {
     "disable-scroll": false,
@@ -126,6 +126,19 @@
   "format": "",
   "tooltip": "VSCode",
   "on-click": "code"
+},
+
+
+
+
+
+"custom/keyboard-state": {
+  "format": " {}",
+  "tooltip": "Keyboard Layout",
+  "exec": "/home/smail/.config/hypr/scripts/kb_layout.sh",
+  "interval": 1,
+  "on-click": "/home/smail/.config/hypr/scripts/kb_layout.sh toggle"
 }
+
 }
 
