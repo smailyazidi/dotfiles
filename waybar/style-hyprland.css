@@ -46,7 +46,9 @@ window#waybar {
 #battery,
 #custom-filemanager,
 #custom-bluetooth,
-#custom-app_launcher {
+#custom-app_launcher,
+#custom-keyboard-state
+#custom-lock{
   padding: 0 10px;
   margin: 0 5px;
   background-color: transparent;
@@ -89,11 +91,15 @@ window#waybar {
 #custom-app_spotify,
 #custom-app_vscode,
 #window,
-#custom-keyboard-state{
+#custom-keyboard-state,
+#custom-lock{
   padding: 0 10px;
   margin: 0 5px;
   background-color: transparent;
   border-radius: 4px;
   animation: colorCycle 6s infinite linear;
 }
+#custom-lock{
+  margin-right:7px;
 
+}

@@ -16,7 +16,7 @@
   "hyprland/window"
 ],
   "modules-center": ["clock"],
-  "modules-right": ["custom/filemanager", "custom/bluetooth", "custom/net_speed", "cpu",  "custom/keyboard-state" , "memory", "pulseaudio", "network", "battery"],
+  "modules-right": ["custom/filemanager", "custom/bluetooth", "custom/net_speed", "cpu",  "custom/keyboard-state" , "memory", "pulseaudio", "network", "battery","custom/lock"],
 
   "hyprland/workspaces": {
     "disable-scroll": false,
@@ -65,13 +65,15 @@
     "interval": 3600
   },
 
-  "network": {
-    "interface": "wlp2s0",
-    "format-wifi": " {essid}",
-    "format-disconnected": "⚠ No Network",
-    "tooltip": true,
-    "on-click": "nm-connection-editor"
-  },
+
+"network": {
+  "interface": "wlp2s0",
+  "format-wifi": " {essid}",
+  "format-disconnected": "⚠ No Network",
+  "tooltip": true,
+  "on-click": "kitty --class wifi-menu --title 'Wi-Fi Menu' bash -c '~/.config/hypr/scripts/wifi.sh'"
+}
+,
 
   "battery": {
     "format": "  {capacity}%",
@@ -138,7 +140,14 @@
   "exec": "/home/smail/.config/hypr/scripts/kb_layout.sh",
   "interval": 1,
   "on-click": "/home/smail/.config/hypr/scripts/kb_layout.sh toggle"
+},
+"custom/lock": {
+    "format": "",  // Lock icon (you can use "Lock" text if preferred)
+    "tooltip": "Double-click to lock screen",
+ "on-click": "hyprlock",  // or "swaylock -f" if using swaylock
+    "interval": 3600
 }
+
 
 }
 
