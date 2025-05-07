@@ -6,17 +6,26 @@
 power_on() {
   bluetoothctl show | grep -q "Powered: yes"
 }
+# Color definitions
+RED="\e[31m"
+GREEN="\e[32m"
+YELLOW="\e[33m"
+BLUE="\e[34m"
+MAGENTA="\e[35m"
+CYAN="\e[36m"
+RESET="\e[0m"
+BOLD="\e[1m"
 
 # ===== Main Menu =====
 
 main_menu() {
   clear
-  echo "===== System Control ====="
-  echo "1) Manage Wi-Fi"
-  echo "2) Manage Bluetooth"
-  echo "3) Audio Control"
-  echo "4) Power Options"
-  echo "5) Exit"
+  echo -e "${BLUE}===== System Control =====${RESET}"
+  echo -e "1) Manage Wi-Fi"
+  echo -e "2) Manage Bluetooth"
+  echo -e "3) Audio Control"
+  echo -e "4) Power Options"
+  echo -e "5) Exit"
   echo -n "Choose a number: "
   read choice
 
@@ -27,7 +36,7 @@ main_menu() {
   4) power_menu ;;
   5) exit ;;
   *)
-    echo "Invalid option"
+    echo -e "${RED}Invalid option${RESET}"
     sleep 1
     main_menu
     ;;
@@ -39,51 +48,51 @@ main_menu() {
 wifi_menu() {
   while true; do
     clear
-    echo "===== Wi-Fi Menu ====="
+    echo -e "${BLUE}===== Wi-Fi Menu =====${RESET}"
 
     wifi_status=$(nmcli radio wifi)
-    echo "Wi-Fi is: $wifi_status"
+    echo -e "Wi-Fi is: ${WHITE}$wifi_status${RESET}"
 
     current_ssid=$(nmcli -t -f ACTIVE,SSID dev wifi | grep '^yes' | cut -d ':' -f2)
 
     if [[ "$wifi_status" == "disabled" ]]; then
-      echo "Wi-Fi is turned off."
-      echo "1) Turn Wi-Fi ON"
-      echo "q) Quit"
-      echo -n "Choose an option: "
+      echo -e "${RED}Wi-Fi is turned off.${RESET}"
+      echo -e "1) Turn Wi-Fi ON"
+      echo -e "q) Quit"
+      echo -n "${MAGENTA}Choose an option:${RESET} "
       read choice
 
       case "$choice" in
       1)
-        nmcli radio wifi on && echo "✅ Wi-Fi enabled." || echo "❌ Failed to enable Wi-Fi."
+        nmcli radio wifi on && echo -e "${GREEN}✅ Wi-Fi enabled.${RESET}" || echo -e "${RED}❌ Failed to enable Wi-Fi.${RESET}"
         sleep 2
         ;;
       q)
         break
         ;;
       *)
-        echo "❌ Invalid option."
+        echo -e "${RED}❌ Invalid option.${RESET}"
         sleep 2
         ;;
       esac
 
     elif [[ -n "$current_ssid" ]]; then
-      echo "Connected to: $current_ssid"
-      echo "1) Turn Wi-Fi OFF"
-      echo "2) Disconnect from $current_ssid"
-      echo "3) Back to Main Menu"
-      echo "q) Quit"
+      echo -e "Connected to: ${GREEN}$current_ssid${RESET}"
+      echo -e "1) Turn Wi-Fi OFF"
+      echo -e "2) Disconnect from $current_ssid"
+      echo -e "3) Back to Main Menu"
+      echo -e "q) Quit"
       echo -n "Choose an option: "
       read choice
 
       case "$choice" in
       1)
-        nmcli radio wifi off && echo "✅ Wi-Fi disabled." || echo "❌ Failed to disable Wi-Fi."
+        nmcli radio wifi off && echo -e "${GREEN}✅ Wi-Fi disabled.${RESET}" || echo -e "${RED}❌ Failed to disable Wi-Fi.${RESET}"
         sleep 2
         ;;
       2)
-        echo "Disconnecting from $current_ssid..."
-        nmcli con down id "$current_ssid" && echo "✅ Disconnected." || echo "❌ Failed to disconnect."
+        echo -e "Disconnecting from $current_ssid..."
+        nmcli con down id "$current_ssid" && echo -e "${GREEN}✅ Disconnected.${NC}" || echo -e "${RED}❌ Failed to disconnect.${RESET}"
         sleep 2
         ;;
       3)
@@ -94,36 +103,36 @@ wifi_menu() {
         break
         ;;
       *)
-        echo "❌ Invalid selection."
+        echo -e "${RED}❌ Invalid selection.${RESET}"
         sleep 2
         ;;
       esac
 
     else
-      echo "Not connected to Wi-Fi."
+      echo -e "Not connected to Wi-Fi."
       echo ""
-      echo "Scanning for available networks..."
+      echo -e "Scanning for available networks..."
       mapfile -t network_list < <(nmcli -t -f SSID,SECURITY dev wifi | grep -v "^:" | sort -u)
 
       if [ ${#network_list[@]} -eq 0 ]; then
-        echo "No networks found."
+        echo -e "${YELLOW}No networks found.${RESET}"
         sleep 2
         continue
       fi
 
-      echo "===== Available Networks ====="
+      echo -e "${BLUE}===== Available Networks =====${RESET}"
       for i in "${!network_list[@]}"; do
         ssid=$(echo "${network_list[$i]}" | cut -d ':' -f1)
         sec=$(echo "${network_list[$i]}" | cut -d ':' -f2)
         if [[ "$sec" == "--" || -z "$sec" ]]; then
-          echo "$((i + 1))) $ssid (Open Network)"
+          echo -e "$((i + 1))) $ssid (${GREEN}Open Network${RESET})"
         else
-          echo "$((i + 1))) $ssid (Locked Network)"
+          echo -e "$((i + 1))) $ssid (${RED}Locked Network${RESET})"
         fi
       done
-      echo "a) Turn Wi-Fi OFF"
-      echo "r) Refresh"
-      echo "q) Quit"
+      echo -e "a) Turn Wi-Fi OFF"
+      echo -e "r) Refresh"
+      echo -e "q) Quit"
       echo -n "Choose a network or option: "
       read choice
 
@@ -132,11 +141,11 @@ wifi_menu() {
       elif [[ "$choice" == "r" ]]; then
         continue
       elif [[ "$choice" == "a" ]]; then
-        nmcli radio wifi off && echo "✅ Wi-Fi disabled." || echo "❌ Failed to disable Wi-Fi."
+        nmcli radio wifi off && echo -e "${GREEN}✅ Wi-Fi disabled.${RESET}" || echo -e "${RED}❌ Failed to disable Wi-Fi.${RESET}"
         sleep 2
         continue
       elif ! [[ "$choice" =~ ^[0-9]+$ ]] || ((choice < 1 || choice > ${#network_list[@]})); then
-        echo "❌ Invalid selection."
+        echo -e "${RED}❌ Invalid selection.${RESET}"
         sleep 2
         continue
       fi
@@ -146,19 +155,19 @@ wifi_menu() {
       sec=$(echo "$selected" | cut -d ':' -f2)
 
       if [[ "$sec" == "--" || -z "$sec" ]]; then
-        echo "Connecting to open network: $ssid..."
+        echo -e "Connecting to open network: $ssid..."
         if nmcli device wifi connect "$ssid"; then
-          echo "✅ Connected to $ssid"
+          echo -e "${GREEN}✅ Connected to $ssid${RESET}"
         else
-          echo "❌ Failed to connect to $ssid"
+          echo -e "${RED}❌ Failed to connect to $ssid${RESET}"
         fi
       else
         read -s -p "Enter password for $ssid: " password
         echo
         if nmcli device wifi connect "$ssid" password "$password"; then
-          echo "✅ Connected to $ssid"
+          echo -e "${GREEN}✅ Connected to $ssid${RESET}"
         else
-          echo "❌ Connection failed. Wrong password?"
+          echo -e "${RED}❌ Connection failed. Wrong password?${RESET}"
         fi
       fi
       sleep 2
@@ -171,20 +180,20 @@ wifi_menu() {
 bluetooth_menu() {
   while true; do
     clear
-    echo "===== Bluetooth Control ====="
+    echo -e "${BLUE}===== Bluetooth Control =====${RESET}"
 
     if power_on; then
-      echo "Bluetooth Status: ON"
+      echo -e "Bluetooth Status: ${GREEN}ON${RESET}"
       bluetooth_on=true
     else
-      echo "Bluetooth Status: OFF"
+      echo -e "Bluetooth Status: ${RED}OFF${RESET}"
       bluetooth_on=false
     fi
 
-    echo "1) Power ON/OFF Bluetooth"
-    echo "2) Scan and Connect to Devices"
-    echo "3) Disconnect Current Device"
-    echo "4) Back to Main Menu"
+    echo -e "1) Power ON/OFF Bluetooth"
+    echo -e "2) Scan and Connect to Devices"
+    echo -e "3) Disconnect Current Device"
+    echo -e "4) Back to Main Menu"
     echo -n "Choose: "
     read choice
 
@@ -192,30 +201,30 @@ bluetooth_menu() {
     1)
       if $bluetooth_on; then
         bluetoothctl power off
-        echo "Bluetooth turned OFF."
+        echo -e "${RED}Bluetooth turned OFF.${RESET}"
       else
         bluetoothctl power on
-        echo "Bluetooth turned ON."
+        echo -e "${GREEN}Bluetooth turned ON.${RESET}"
       fi
       sleep 1
       ;;
 
     2)
       if ! power_on; then
-        echo "Bluetooth is OFF. Turning it ON..."
+        echo -e "${YELLOW}Bluetooth is OFF. Turning it ON...${RESET}"
         bluetoothctl power on
         sleep 2
       fi
 
-      echo "Scanning for devices..."
+      echo -e "${BLUE}Scanning for devices...${RESET}"
       bluetoothctl scan on &>/dev/null
       sleep 5
       bluetoothctl scan off &>/dev/null
-      echo "===== Available Bluetooth Devices ====="
+      echo -e "${BLUE}===== Available Bluetooth Devices =====${RESET}"
       mapfile -t device_lines < <(bluetoothctl devices | grep "Device")
       if [ ${#device_lines[@]} -eq 0 ]; then
-        echo "No devices found."
-        echo "Press Enter to return."
+        echo -e "${YELLOW}No devices found.${RESET}"
+        echo -e "Press Enter to return."
         read
         continue
       fi
@@ -231,7 +240,7 @@ bluetooth_menu() {
       done
 
       for i in "${!names[@]}"; do
-        echo "$((i + 1))) ${names[$i]} (${macs[$i]})"
+        echo -e "$((i + 1))) ${names[$i]} (${macs[$i]})"
       done
 
       echo -n "Choose a number to connect: "
@@ -239,38 +248,38 @@ bluetooth_menu() {
       index=$((dev_choice - 1))
 
       if [ -z "${macs[$index]}" ]; then
-        echo "Invalid choice."
+        echo -e "${RED}Invalid choice.${RESET}"
         sleep 1
         continue
       fi
 
       device_mac="${macs[$index]}"
       device_name="${names[$index]}"
-      echo "Pairing with $device_name..."
+      echo -e "Pairing with $device_name..."
       bluetoothctl pair "$device_mac"
       sleep 2
 
-      echo "Connecting to $device_name..."
+      echo -e "Connecting to $device_name..."
       bluetoothctl connect "$device_mac"
       sleep 2
 
       if bluetoothctl info "$device_mac" | grep -q "Connected: yes"; then
-        echo "Connected to $device_name."
+        echo -e "${GREEN}Connected to $device_name.${RESET}"
       else
-        echo "Failed to connect."
+        echo -e "${RED}Failed to connect.${RESET}"
       fi
 
-      echo "Press Enter to continue."
+      echo -e "Press Enter to continue."
       read
       ;;
 
     3)
       connected_mac=$(bluetoothctl info | grep "Device" | awk '{print $2}')
       if [ -z "$connected_mac" ]; then
-        echo "No connected device."
+        echo -e "${YELLOW}No connected device.${RESET}"
       else
         bluetoothctl disconnect "$connected_mac"
-        echo "Disconnected from $connected_mac."
+        echo -e "${GREEN}Disconnected from $connected_mac.${RESET}"
       fi
       sleep 2
       ;;
@@ -281,7 +290,7 @@ bluetooth_menu() {
       ;;
 
     *)
-      echo "Invalid option."
+      echo -e "${RED}Invalid option.${RESET}"
       sleep 1
       ;;
     esac
@@ -293,11 +302,11 @@ bluetooth_menu() {
 sound_menu() {
   while true; do
     clear
-    echo "===== Audio Control ====="
-    echo "1) Volume Up"
-    echo "2) Volume Down"
-    echo "3) Toggle Mute"
-    echo "4) Back to Main Menu"
+    echo -e "${BLUE}===== Audio Control =====${RESET}"
+    echo -e "1) Volume Up"
+    echo -e "2) Volume Down"
+    echo -e "3) Toggle Mute"
+    echo -e "4) Back to Main Menu"
     echo -n "Choose: "
     read s_choice
 
@@ -310,7 +319,7 @@ sound_menu() {
       return
       ;;
     *)
-      echo "Invalid option"
+      echo -e "${RED}Invalid option${RESET}"
       sleep 1
       ;;
     esac
@@ -321,11 +330,11 @@ sound_menu() {
 
 power_menu() {
   clear
-  echo "===== Power Options ====="
-  echo "1) Logout from Hyprland"
-  echo "2) Reboot"
-  echo "3) Shutdown"
-  echo "4) Lock Screen"
+  echo -e "${BLUE}===== Power Options =====${RESET}"
+  echo -e "1) Logout from Hyprland"
+  echo -e "2) Reboot"
+  echo -e "3) Shutdown"
+  echo -e "4) Lock Screen"
   echo "5) Back"
   echo -n "Choose: "
   read p_choice
@@ -346,6 +355,5 @@ power_menu() {
     ;;
   esac
 }
-
-# ===== Start Script =====
 main_menu
+# ===== Start Script =====

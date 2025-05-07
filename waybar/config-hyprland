@@ -18,6 +18,7 @@
   "modules-center": ["clock"],
   "modules-right": ["custom/filemanager", "custom/bluetooth", "custom/net_speed", "cpu",  "custom/keyboard-state" , "memory", "pulseaudio", "network", "battery","custom/lock"],
 
+
   "hyprland/workspaces": {
     "disable-scroll": false,
     "format": "{name}",
@@ -61,7 +62,7 @@
   "custom/bluetooth": {
     "format": "󰂯 Bluetooth",
     "tooltip": "Open Bluetooth Manager",
-    "on-click": "blueman-manager",
+   "on-click": "kitty --class bluetooth-menu --title 'bluetooth Menu' bash -c '~/.config/hypr/scripts/bluetooth.sh'",
     "interval": 3600
   },
 
